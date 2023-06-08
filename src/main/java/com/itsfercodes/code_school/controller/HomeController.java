@@ -8,11 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
   @GetMapping(value = { "", "/" })
-  // model is a container to hold the values for the template to be rendered
-  public String displayHomePage(Model model) {
-    // model works as a key value structure. Key should be the same as in the
-    // template
-    model.addAttribute("username", "Fernando");
+  public String displayHomePage() {
     return "index.html";
   }
 
