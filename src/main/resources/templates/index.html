@@ -354,19 +354,24 @@ Author URL: http://w3layouts.com
     <span class="fas fa-level-up-alt" aria-hidden="true"></span>
   </button>
   <script>
-            the user scrolls down 20px from the top of the document, show the button
-           onscroll = function () {
-             unction()
-                   n scrollFunction() {
-             ument.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-               t.getElementById("movetop").style.display = "block";
-             {
-               t.getElementById("movetop").style.display = "none";
-                           the user clicks on the button, scroll to the top of the document
-           n topFunction() {
-             t.body.scrollTop = 0;
-             t.documentElement.scrollTop = 0;
-        }
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () {
+      scrollFunction()
+    };
+
+    function scrollFunction() {
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("movetop").style.display = "block";
+      } else {
+        document.getElementById("movetop").style.display = "none";
+      }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
   </script>
   <!-- //move top -->
 
@@ -384,31 +389,40 @@ Author URL: http://w3layouts.com
 
   <!-- MENU-JS -->
   <script>
-        $    .on("scroll", function () {
-               l = $(window).scrollTop();
+    $(window).on("scroll", function () {
+      var scroll = $(window).scrollTop();
 
-               l >= 80) {
-                 header").addClass("nav-fixed");
-                                header").removeClass("nav-fixed");
-                }        /    vigation Active Class Add Remove
-        $    r-toggler").on("click", function () {
-               ").toggleClass("active");
-        }       $    t).on("ready", function () {
-               dow).width() > 991) {
-                 ").removeClass("active");
-                       .on("resize", function () {
-                 dow).width() > 991) {
-                   ").removeClass("active");
-                            });
+      if (scroll >= 80) {
+        $("#site-header").addClass("nav-fixed");
+      } else {
+        $("#site-header").removeClass("nav-fixed");
+      }
+    });
+
+    //Main navigation Active Class Add Remove
+    $(".navbar-toggler").on("click", function () {
+      $("header").toggleClass("active");
+    });
+    $(document).on("ready", function () {
+      if ($(window).width() > 991) {
+        $("header").removeClass("active");
+      }
+      $(window).on("resize", function () {
+        if ($(window).width() > 991) {
+          $("header").removeClass("active");
+        }
+      });
+    });
   </script>
   <!-- //MENU-JS -->
 
   <!-- disable body scroll which navbar is in active -->
   <script>
-        $(f    () {
-                 toggler').click(function () {
-                   oggleClass('noscroll');
-                 });
+    $(function () {
+      $('.navbar-toggler').click(function () {
+        $('body').toggleClass('noscroll');
+      })
+    });
   </script>
   <!-- //disable body scroll which navbar is in active -->
 
