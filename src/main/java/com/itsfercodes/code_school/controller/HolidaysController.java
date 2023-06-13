@@ -7,21 +7,30 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.itsfercodes.code_school.model.Holiday;
 
 @Controller
 public class HolidaysController {
 
-  @GetMapping("/holidays")
-  public String displayHolidays(
-      @RequestParam(required = false) boolean festival,
-      @RequestParam(required = false) boolean federal,
-      Model model) {
+  @GetMapping("/holidays/{display}")
+  public String displayHolidays(@PathVariable String display, Model model) {
 
-    model.addAttribute("festival", festival);
-    model.addAttribute("federal", federal);
+    if (display.equals("all")) {
+      model.addAttribute("festival", true);
+      model.addAttribute("federal", true);
+    } else if (display.equals("federal")) {
+      model.addAttribute("federal", true);
+    } else if (display.equals("festival")) {
+      model.addAttribute("festival", true);
+    }
+
+    if (!model.containsAttribute("festival") && !model.containsAttribute("federal")) {
+      // TODO: Add 404 error page
+      return "404.html";
+
+    }
 
     // TODO: move holidays to db
     List<Holiday> holidays = Arrays.asList(
