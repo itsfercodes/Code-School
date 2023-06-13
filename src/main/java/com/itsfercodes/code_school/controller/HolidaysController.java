@@ -2,7 +2,6 @@ package com.itsfercodes.code_school.controller;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
@@ -29,7 +28,8 @@ public class HolidaysController {
 
     // Collect the values of the enum
     Holiday.Type[] types = Holiday.Type.values();
-    // For each value in types, group all the holidays by type
+    // For each value in types, group all the holidays by type in a list and add it
+    // to the model
     for (Holiday.Type type : types) {
       model.addAttribute(type.toString(), (holidays.stream()
           .filter(holiday -> holiday.getType().equals(type))
