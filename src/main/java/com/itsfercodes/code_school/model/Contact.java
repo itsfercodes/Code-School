@@ -22,11 +22,11 @@ public class Contact {
   private String email;
 
   @NotBlank(message = "Subject must not be blank")
-  @Size(min = 5, message = "Name must be at least 5 characters long")
+  @Size(min = 5, message = "Message must be at least 5 characters long")
   private String subject;
 
   @NotBlank(message = "Message must not be blank")
-  @Size(min = 10, message = "Name must be at least 10 characters long")
+  @Size(min = 10, message = "Message must be at least 10 characters long")
   private String message;
 
 }

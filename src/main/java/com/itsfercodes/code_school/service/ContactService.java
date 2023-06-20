@@ -10,6 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ContactService {
 
+  private int counter = 0;
+
+  public ContactService() {
+    System.out.println("Contact service initilazed!");
+  }
+
   /**
    * Save Contact details into DB
    * 
@@ -22,4 +28,13 @@ public class ContactService {
     log.info(contact.toString());
     return isSaved;
   }
+
+  public int getCounter() {
+    return counter;
+  }
+
+  public void setCounter(int counter) {
+    this.counter = counter;
+  }
+
 }

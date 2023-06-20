@@ -6,7 +6,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.itsfercodes.code_school.model.Contact;
 import com.itsfercodes.code_school.service.ContactService;
@@ -40,12 +39,17 @@ public class ContactController {
   // validation inside the object
   public String saveMessage(@Valid @ModelAttribute("contact") Contact contact, Errors errors) {
 
+    // If there are errors the fields will not be empty once the page is reloaded
     if (errors.hasErrors()) {
       log.error("Contact form validation failed due to: " + errors.toString());
       return "contact.html";
     }
 
     contactService.saveMessageDetails(contact);
+    contactService.setCounter(contactService.getCounter() + 1);
+    log.info("Number of times the contact form is submitted: " + contactService.getCounter());
+    // With redirect we mean that it will not process any information of the
+    // template engine, as it was new
     return "redirect:/contact-us";
   }
 }
