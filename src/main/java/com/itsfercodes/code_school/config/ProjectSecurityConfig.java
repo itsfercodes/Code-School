@@ -11,14 +11,32 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class ProjectSecurityConfig {
 
-  String[] staticResources = { "/assets/**", "/holidays/**", "/courses", "/contact-us", "/", "", "/about" };
+  String[] staticResources = { "/assets/**", "/holidays/**", "/courses", "/contact-us", "/", "", "/about", "/login" };
+  String[] authenticationResources = { "/dashboard" };
 
   @Bean
   SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
+    http.csrf(csrf -> csrf.disable());
+
     http.authorizeHttpRequests((authz) -> authz
         // Public
-        .requestMatchers(staticResources).permitAll());
+        .requestMatchers(staticResources).permitAll()
+        // Require authentication
+        .requestMatchers(authenticationResources).authenticated());
+
+    // Login page
+    http.formLogin(login -> login
+        .loginPage("/login")
+        .defaultSuccessUrl("/dashboard")
+        .failureUrl("/login?error=true")
+        .permitAll());
+
+    // Logout handler (using default spring security setup)
+    http.logout(logout -> logout
+        .logoutSuccessUrl("/login?logout=true")
+        .invalidateHttpSession(true)
+        .permitAll());
     return http.build();
   }
 
