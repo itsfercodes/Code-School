@@ -1,5 +1,6 @@
 package com.itsfercodes.code_school.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,11 +19,12 @@ public class ProjectSecurityConfig {
   @Bean
   SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-    http.csrf(csrf -> csrf.ignoringRequestMatchers("/saveMessage"));
+    http.csrf(csrf -> csrf.ignoringRequestMatchers("/saveMessage").ignoringRequestMatchers(PathRequest.toH2Console()));
 
     http.authorizeHttpRequests((authz) -> authz
         // Public
         .requestMatchers(publicResources).permitAll()
+        .requestMatchers(PathRequest.toH2Console()).permitAll()
         // Require authentication
         .requestMatchers(authenticationResources).authenticated());
 
@@ -32,6 +34,8 @@ public class ProjectSecurityConfig {
         .defaultSuccessUrl("/dashboard")
         .failureUrl("/login?error=true")
         .permitAll());
+
+    http.headers().frameOptions().disable();
 
     return http.build();
   }
