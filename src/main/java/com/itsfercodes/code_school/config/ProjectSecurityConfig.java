@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class ProjectSecurityConfig {
 
   String[] publicResources = { "/assets/**", "/holidays/**", "/courses", "/contact-us", "/", "", "/about", "/login",
-      "/logout" };
+      "/logout", "/saveMessage" };
   String[] authenticationResources = { "/dashboard" };
 
   @Bean

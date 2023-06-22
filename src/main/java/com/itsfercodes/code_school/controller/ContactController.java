@@ -19,9 +19,6 @@ public class ContactController {
 
   private final ContactService contactService;
 
-  // Is optional as it is only one constructor, if there are more then it will
-  // require it
-  // @Autowired
   public ContactController(ContactService contactService) {
     this.contactService = contactService;
   }
@@ -46,10 +43,6 @@ public class ContactController {
     }
 
     contactService.saveMessageDetails(contact);
-    contactService.setCounter(contactService.getCounter() + 1);
-    log.info("Number of times the contact form is submitted: " + contactService.getCounter());
-    // With redirect we mean that it will not process any information of the
-    // template engine, as it was new
     return "redirect:/contact-us";
   }
 }

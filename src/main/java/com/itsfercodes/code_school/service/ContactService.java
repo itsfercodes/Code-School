@@ -1,8 +1,13 @@
 package com.itsfercodes.code_school.service;
 
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itsfercodes.code_school.model.Contact;
+import com.itsfercodes.code_school.repository.ContactRepository;
+import com.itsfercodes.constants.CodeSchoolConstants;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,7 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ContactService {
 
-  private int counter = 0;
+  @Autowired
+  private ContactRepository contactRepository;
 
   public ContactService() {
     System.out.println("Contact service initilazed!");
@@ -23,18 +29,18 @@ public class ContactService {
    * @return boolean
    */
   public boolean saveMessageDetails(Contact contact) {
-    boolean isSaved = true;
-    // TODO: Save the data into a database
-    log.info(contact.toString());
+    boolean isSaved = false;
+
+    contact.setStatus(CodeSchoolConstants.OPEN);
+    contact.setCreatedBy(CodeSchoolConstants.ANONYMOUS);
+    contact.setCreatedAt(LocalDateTime.now());
+
+    int result = contactRepository.saveContactMessage(contact);
+
+    if (result > 0) {
+      isSaved = true;
+    }
     return isSaved;
-  }
-
-  public int getCounter() {
-    return counter;
-  }
-
-  public void setCounter(int counter) {
-    this.counter = counter;
   }
 
 }
