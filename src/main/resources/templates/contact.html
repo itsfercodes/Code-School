@@ -49,6 +49,10 @@ Author URL: http://w3layouts.com
           <ul>
             <li class="alert alert-danger" role="alert" th:each="error: ${#fields.errors('contact.*')}"
               th:text="${error}"></li>
+            <li class="alert alert-info" role="alert" th:if="${!#strings.isEmpty(savedMessage)}"
+              th:text="${savedMessage}"></li>
+            <li class="alert alert-danger" role="alert" th:if="${!#strings.isEmpty(errorMessage)}"
+              th:text="${errorMessage}"></li>
           </ul>
           <form th:action="@{/saveMessage}" method="post" class="signin-form" th:object="${contact}">
             <div class="input-grids">

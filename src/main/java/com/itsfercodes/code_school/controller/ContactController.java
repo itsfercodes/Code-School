@@ -6,6 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itsfercodes.code_school.model.Contact;
 import com.itsfercodes.code_school.service.ContactService;
@@ -34,7 +35,8 @@ public class ContactController {
   // The @ModelAttribute means that there is a model attribute named contact that
   // is binded to the object contact. @Valid let spring know that there are
   // validation inside the object
-  public String saveMessage(@Valid @ModelAttribute("contact") Contact contact, Errors errors) {
+  public String saveMessage(@Valid @ModelAttribute("contact") Contact contact, Errors errors,
+      RedirectAttributes redirectAttributes) {
 
     // If there are errors the fields will not be empty once the page is reloaded
     if (errors.hasErrors()) {
@@ -42,7 +44,11 @@ public class ContactController {
       return "contact.html";
     }
 
-    contactService.saveMessageDetails(contact);
+    if (contactService.saveMessageDetails(contact)) {
+      redirectAttributes.addFlashAttribute("savedMessage", "Message saved successfully!");
+    } else {
+      redirectAttributes.addFlashAttribute("savedMessage", "Error while saving message, please try again later");
+    }
     return "redirect:/contact-us";
   }
 }
