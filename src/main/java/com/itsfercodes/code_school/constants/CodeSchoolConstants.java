@@ -1,4 +1,4 @@
-package com.itsfercodes.constants;
+package com.itsfercodes.code_school.constants;
 
 public interface CodeSchoolConstants {
   public static final String ANONYMOUS = "Anonymous";

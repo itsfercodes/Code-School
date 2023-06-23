@@ -13,8 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 public class ProjectSecurityConfig {
 
   String[] publicResources = { "/assets/**", "/holidays/**", "/courses", "/contact-us", "/", "", "/about", "/login",
-      "/logout", "/saveMessage" };
+      "/logout", "/saveMessage", "/error" };
   String[] authenticationResources = { "/dashboard" };
+  String[] adminResources = { "/displayMessages/**", "/closeMessage/**" };
 
   @Bean
   SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -25,8 +26,12 @@ public class ProjectSecurityConfig {
         // Public
         .requestMatchers(publicResources).permitAll()
         .requestMatchers(PathRequest.toH2Console()).permitAll()
+
         // Require authentication
-        .requestMatchers(authenticationResources).authenticated());
+        .requestMatchers(authenticationResources).authenticated()
+
+        // Require ADMIN role
+        .requestMatchers(adminResources).hasRole("ADMIN"));
 
     // Login page
     http.formLogin(login -> login
@@ -53,7 +58,7 @@ public class ProjectSecurityConfig {
     UserDetails admin = User.withDefaultPasswordEncoder()
         .username("admin")
         .password("54321")
-        .roles("USER", "ADMIN")
+        .roles("ADMIN")
         .build();
 
     return new InMemoryUserDetailsManager(user, admin);

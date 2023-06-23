@@ -1,11 +1,15 @@
 package com.itsfercodes.code_school.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itsfercodes.code_school.model.Contact;
@@ -45,10 +49,19 @@ public class ContactController {
     }
 
     if (contactService.saveMessageDetails(contact)) {
-      redirectAttributes.addFlashAttribute("savedMessage", "Message saved successfully!");
+      redirectAttributes.addFlashAttribute("savedMessage",
+          "Information submitted successfully! Expect a call from us soon");
     } else {
       redirectAttributes.addFlashAttribute("savedMessage", "Error while saving message, please try again later");
     }
     return "redirect:/contact-us";
+  }
+
+  @RequestMapping("/displayMessages")
+  public ModelAndView displayMessages(Model model) {
+    List<Contact> contactMessages = contactService.findOpenStatusMessages();
+    ModelAndView modelAndView = new ModelAndView("messages.html");
+    modelAndView.addObject("contactMessages", contactMessages);
+    return modelAndView;
   }
 }

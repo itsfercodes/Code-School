@@ -1,13 +1,14 @@
 package com.itsfercodes.code_school.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itsfercodes.code_school.constants.CodeSchoolConstants;
 import com.itsfercodes.code_school.model.Contact;
 import com.itsfercodes.code_school.repository.ContactRepository;
-import com.itsfercodes.constants.CodeSchoolConstants;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,6 +42,11 @@ public class ContactService {
       isSaved = true;
     }
     return isSaved;
+  }
+
+  public List<Contact> findOpenStatusMessages() {
+    List<Contact> contactMessages = contactRepository.findMessagesByStatus(CodeSchoolConstants.OPEN);
+    return contactMessages;
   }
 
 }
