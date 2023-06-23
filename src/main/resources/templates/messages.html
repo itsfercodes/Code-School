@@ -38,6 +38,12 @@
     <div class="table-responsive-md">
       <div class="row mb-4">
         <div class="col-md-7">
+          <ul class="mb-3">
+            <li class="alert alert-info" role="alert" th:if="${!#strings.isEmpty(updated)}" th:text="${updated}">
+            </li>
+            <li class="alert alert-danger" role="alert" th:if="${!#strings.isEmpty(notUpdated)}"
+              th:text="${notUpdated}"></li>
+          </ul>
           <h3 class="heading-21921">Open Contact Messages</h3>
         </div>
       </div>
@@ -59,6 +65,7 @@
             <td th:text="${msg.email}"></td>
             <td th:text="${msg.subject}"></td>
             <td th:text="${msg.message}"></td>
+            <!-- /closeMessage?msg.contactId -->
             <td><a th:href="@{/closeMessage(id=${msg.contactId})}" class="btn btn-style btn-style-3">CLOSE</a></td>
           </tr>
         </tbody>

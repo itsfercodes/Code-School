@@ -2,6 +2,7 @@ package com.itsfercodes.code_school.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -17,6 +18,7 @@ import com.itsfercodes.code_school.service.ContactService;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @Controller
@@ -64,4 +66,20 @@ public class ContactController {
     modelAndView.addObject("contactMessages", contactMessages);
     return modelAndView;
   }
+
+  @GetMapping(value = "/closeMessage")
+  public String closeMessage(@RequestParam int id, Authentication authentication,
+      RedirectAttributes redirectAttributes) {
+
+    if (contactService.updateMessageStatus(id, authentication.getName())) {
+      redirectAttributes.addFlashAttribute("updated",
+          "Message status updated succesfully!");
+    } else {
+      redirectAttributes.addFlashAttribute("notUpdated",
+          "Error while updating message, please inform about this error");
+    }
+
+    return "redirect:/displayMessages";
+  }
+
 }

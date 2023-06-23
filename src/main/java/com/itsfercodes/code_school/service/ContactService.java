@@ -38,15 +38,25 @@ public class ContactService {
 
     int result = contactRepository.saveContactMessage(contact);
 
-    if (result > 0) {
+    if (result > 0)
       isSaved = true;
-    }
+
     return isSaved;
   }
 
   public List<Contact> findOpenStatusMessages() {
     List<Contact> contactMessages = contactRepository.findMessagesByStatus(CodeSchoolConstants.OPEN);
     return contactMessages;
+  }
+
+  public boolean updateMessageStatus(int contactId, String updatedBy) {
+    boolean isUpdated = false;
+    int result = contactRepository.updateMessageStatus(contactId, updatedBy, CodeSchoolConstants.CLOSE);
+
+    if (result > 0)
+      isUpdated = true;
+
+    return isUpdated;
   }
 
 }
