@@ -55,7 +55,7 @@
             <th scope="col">Email</th>
             <th scope="col">Subject</th>
             <th scope="col">Message</th>
-            <th scope="col"></th>
+            <th scope="col">Close Status</th>
           </tr>
         </thead>
         <tbody>
@@ -66,7 +66,8 @@
             <td th:text="${msg.subject}"></td>
             <td th:text="${msg.message}"></td>
             <!-- /closeMessage?msg.contactId -->
-            <td><a th:href="@{/closeMessage(id=${msg.contactId})}" class="btn btn-style btn-style-3">CLOSE</a></td>
+            <td><a th:href="@{/closeMessage(id=${msg.contactId})}" class="btn btn-style btn-style-3">Close</a>
+            </td>
           </tr>
         </tbody>
       </table>
