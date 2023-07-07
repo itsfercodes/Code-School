@@ -2,6 +2,7 @@ package com.itsfercodes.code_school.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,24 +37,30 @@ public class ContactService {
     contact.setCreatedBy(CodeSchoolConstants.ANONYMOUS);
     contact.setCreatedAt(LocalDateTime.now());
 
-    int result = contactRepository.saveContactMessage(contact);
+    Contact savedContact = contactRepository.save(contact);
 
-    if (result > 0)
+    if (savedContact != null && savedContact.getContactId() > 0)
       isSaved = true;
 
     return isSaved;
   }
 
   public List<Contact> findOpenStatusMessages() {
-    List<Contact> contactMessages = contactRepository.findMessagesByStatus(CodeSchoolConstants.OPEN);
+    List<Contact> contactMessages = contactRepository.findByStatus(CodeSchoolConstants.OPEN);
     return contactMessages;
   }
 
   public boolean updateMessageStatus(int contactId, String updatedBy) {
     boolean isUpdated = false;
-    int result = contactRepository.updateMessageStatus(contactId, updatedBy, CodeSchoolConstants.CLOSE);
+    Optional<Contact> contact = contactRepository.findById(contactId);
+    contact.ifPresent(attributes -> {
+      attributes.setStatus(CodeSchoolConstants.CLOSE);
+      attributes.setUpdatedBy(updatedBy);
+      attributes.setUpdatedAt(LocalDateTime.now());
+    });
 
-    if (result > 0)
+    Contact updatedContact = contactRepository.save(contact.get());
+    if (updatedContact != null && updatedContact.getUpdatedBy() != null)
       isUpdated = true;
 
     return isUpdated;

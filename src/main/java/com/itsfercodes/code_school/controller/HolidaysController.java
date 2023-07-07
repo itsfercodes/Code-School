@@ -31,7 +31,7 @@ public class HolidaysController {
       model.addAttribute("festival", true);
     }
 
-    List<Holiday> holidays = holidaysRepository.findAllHolidays();
+    List<Holiday> holidays = holidaysRepository.findAll();
 
     // Collect the values of the enum
     Holiday.Type[] types = Holiday.Type.values();
