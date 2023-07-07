@@ -2,6 +2,7 @@ package com.itsfercodes.code_school.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,8 +22,8 @@ import lombok.EqualsAndHashCode;
 public class Contact extends BaseEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-  @GenericGenerator(name = "native", type = org.hibernate.generator.Generator.class)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "contact_id")
   private int contactId;
 
   @NotBlank(message = "Name must not be blank")
