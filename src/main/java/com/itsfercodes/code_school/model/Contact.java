@@ -1,5 +1,13 @@
 package com.itsfercodes.code_school.model;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.cglib.beans.BeanMap.Generator;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -9,8 +17,12 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
+@Table(name = "contact_msg")
 public class Contact extends BaseEntity {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+  @GenericGenerator(name = "native", type = org.hibernate.generator.Generator.class)
   private int contactId;
 
   @NotBlank(message = "Name must not be blank")
