@@ -13,14 +13,15 @@ import org.springframework.security.web.SecurityFilterChain;
 public class ProjectSecurityConfig {
 
   String[] publicResources = { "/assets/**", "/holidays/**", "/courses", "/contact-us", "/", "", "/about", "/login",
-      "/logout", "/saveMessage", "/error" };
+      "/logout", "/saveMessage", "/error", "/public/**" };
   String[] authenticationResources = { "/dashboard" };
   String[] adminResources = { "/displayMessages/**", "/closeMessage/**" };
+  String[] csrfIgnoreList = { "/saveMessage", "/public/**" };
 
   @Bean
   SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-    http.csrf(csrf -> csrf.ignoringRequestMatchers("/saveMessage"));
+    http.csrf(csrf -> csrf.ignoringRequestMatchers(csrfIgnoreList));
 
     http.authorizeHttpRequests((authz) -> authz
         // Public
