@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -22,6 +23,7 @@ import lombok.EqualsAndHashCode;
     @FieldsValueMatch(field = "password", fieldMatch = "confirmPassword", message = "Passwords do not match"),
     @FieldsValueMatch(field = "email", fieldMatch = "confirmEmail", message = "Emails do not match")
 })
+@Table(name = "users")
 public class User extends BaseEntity {
 
   @Id
