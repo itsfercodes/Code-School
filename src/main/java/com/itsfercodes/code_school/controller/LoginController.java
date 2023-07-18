@@ -31,8 +31,10 @@ public class LoginController {
     if (logout != null) {
       logoutMessage = "You have been successfully logged out";
     }
-    if (register != null) {
+    if (register.equals("true")) {
       registerMessage = "User created successfully! Please login";
+    } else {
+      registerMessage = "User could not be created! Please inform about this";
     }
     model.addAttribute("errorMessage", errorMessage);
     model.addAttribute("logoutMessage", logoutMessage);

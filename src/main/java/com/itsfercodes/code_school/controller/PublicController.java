@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itsfercodes.code_school.model.User;
+import com.itsfercodes.code_school.service.UserService;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("public")
 public class PublicController {
 
-  // @Autowired
-  // UserService userService;
+  @Autowired
+  UserService userService;
 
   @GetMapping("/register")
   public String displatResgisterPage(Model model) {
@@ -33,6 +35,10 @@ public class PublicController {
     if (errors.hasErrors()) {
       return "register.html";
     }
-    return "redirect:/login?register=true";
+    if (userService.createNewUser(user)) {
+      return "redirect:/login?register=true";
+    }
+    return "redirect:/login?register=false";
+
   }
 }

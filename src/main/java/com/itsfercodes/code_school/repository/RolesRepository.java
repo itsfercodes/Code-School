@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.itsfercodes.code_school.model.Role;
 
 public interface RolesRepository extends JpaRepository<Role, Integer> {
-
+  Role getByRoleName(String roleName);
 }

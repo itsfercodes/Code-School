@@ -3,10 +3,14 @@ package com.itsfercodes.code_school.model;
 import com.itsfercodes.code_school.annotations.FieldsValueMatch;
 import com.itsfercodes.code_school.annotations.PasswordValidator;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
@@ -56,4 +60,12 @@ public class User extends BaseEntity {
   @Size(min = 5, message = "Confirm must be at least 5 characters long")
   @Transient
   private String confirmPassword;
+
+  @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, targetEntity = Role.class)
+  @JoinColumn(name = "role_id", referencedColumnName = "roleId", nullable = false)
+  private Role roles;
+
+  @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Address.class)
+  @JoinColumn(name = "address_id", referencedColumnName = "addressId", nullable = true)
+  private Address address;
 }
