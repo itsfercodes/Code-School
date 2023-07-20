@@ -1,15 +1,21 @@
 package com.itsfercodes.code_school.config;
 
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.itsfercodes.code_school.security.CodeSchoolAuthenticationProvider;
+
 @Configuration
+@EnableWebSecurity
+@ComponentScan("com.itsfercodes.code_school.security")
 public class ProjectSecurityConfig {
 
   String[] publicResources = { "/assets/**", "/holidays/**", "/courses", "/contact-us", "/", "", "/about", "/login",
@@ -17,6 +23,9 @@ public class ProjectSecurityConfig {
   String[] authenticationResources = { "/dashboard" };
   String[] adminResources = { "/displayMessages/**", "/closeMessage/**" };
   String[] csrfIgnoreList = { "/saveMessage", "/public/**" };
+
+  @Autowired
+  private CodeSchoolAuthenticationProvider authProvider;
 
   @Bean
   SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -38,27 +47,19 @@ public class ProjectSecurityConfig {
         .loginPage("/login")
         .defaultSuccessUrl("/dashboard")
         .failureUrl("/login?error=true")
-        .permitAll());
+        .permitAll())
+        .logout(logoutConfigurer -> logoutConfigurer.logoutSuccessUrl("/login?logout=true")
+            .invalidateHttpSession(true).permitAll())
+        .httpBasic(Customizer.withDefaults());
 
     return http.build();
   }
 
-  // TODO: Create db to store user details
-  // Creates temporary user and admin credentials
   @Bean
-  InMemoryUserDetailsManager userDetailsService() {
-    UserDetails user = User.withDefaultPasswordEncoder()
-        .username("user")
-        .password("12345")
-        .roles("USER")
-        .build();
-
-    UserDetails admin = User.withDefaultPasswordEncoder()
-        .username("admin")
-        .password("54321")
-        .roles("ADMIN")
-        .build();
-
-    return new InMemoryUserDetailsManager(user, admin);
+  public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+    AuthenticationManagerBuilder authenticationManagerBuilder = http
+        .getSharedObject(AuthenticationManagerBuilder.class);
+    authenticationManagerBuilder.authenticationProvider(authProvider);
+    return authenticationManagerBuilder.build();
   }
 }

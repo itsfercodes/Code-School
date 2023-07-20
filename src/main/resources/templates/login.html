@@ -9,7 +9,7 @@ Author URL: http://w3layouts.com
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Eazy School - Best Educational Institute for your Child</title>
+    <title>Code School - Best Educational Institute for your Child</title>
     <!-- Google fonts -->
     <link href="//fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
     <!-- Template CSS Style link -->
@@ -50,9 +50,11 @@ Author URL: http://w3layouts.com
                                 th:text="${errorMessage}"></p>
                             <p class="alert alert-info" role="alert" th:if="${!#strings.isEmpty(logoutMessage)}"
                                 th:text="${logoutMessage}"></p>
-                            <p class="alert alert-info" role="alert" th:if="${!#strings.isEmpty(registerMessage)}"
-                                th:text="${registerMessage}"></p>
-                            <input type="text" name="username" id="username" placeholder="Username"
+                            <p class="alert alert-info" role="alert" th:if="${!#strings.isEmpty(registerMessageSuccessful)}"
+                                th:text="${registerMessageSuccessful}"></p>
+                            <p class="alert alert-danger" role="alert" th:if="${!#strings.isEmpty(registerMessageFailure)}"
+                                th:text="${registerMessageFailure}"></p>
+                            <input type="text" name="username" id="username" placeholder="Email"
                                 class="login-input" />
                             <input type="password" name="password" id="password" placeholder="Password"
                                 class="login-input" />
@@ -60,7 +62,6 @@ Author URL: http://w3layouts.com
                         </div>
                         <div class="col-md-8 login-center text-start">
                             <button class="btn btn-style btn-style-3 text-left">Login</button>
-                            <!-- TODO: add sign up page -->
                             <a th:href="@{/public/register}" class="new-user text-right">New User?</a>
                         </div>
                     </form>

@@ -26,7 +26,7 @@ public class UserService {
     Role role = rolesRepository.getByRoleName(CodeSchoolConstants.STUDENT_ROLE);
     user.setRoles(role);
     user = userRepository.save(user);
-    if (user != null && user.getId() > 0) {
+    if (user != null && user.getUser_id() > 0) {
       isSaved = true;
     }
     return isSaved;

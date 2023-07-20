@@ -32,7 +32,7 @@ public class User extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+  private int user_id;
 
   @NotBlank(message = "Name must not be blank")
   @Size(min = 3, message = "Name must be at least 3 characters long")
