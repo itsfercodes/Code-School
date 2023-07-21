@@ -28,7 +28,6 @@ public class CodeSchoolAuthenticationProvider implements AuthenticationProvider 
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11111");
     String email = authentication.getName();
     String password = authentication.getCredentials().toString();
     User user = userRepository.findByEmail(email);

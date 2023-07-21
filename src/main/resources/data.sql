@@ -28,3 +28,7 @@ INSERT INTO roles (role_name,created_at, created_by)
 
 INSERT INTO roles (role_name,created_at, created_by)
   VALUES ('STUDENT',CURDATE(),'DBA');
+
+INSERT INTO users (name,email,mobile_number,password,role_id,created_at, created_by)
+  VALUES ('Admin','admin@codeschool.com','9988776655','$2a$12$TFw44sgxvSiqSm9OxtuP9OqE/Bwok0XUULVQwh4JnkTaafzcicZI2', 1 ,CURRENT_DATE,'DBA');
+  
