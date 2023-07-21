@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.itsfercodes.code_school.model.Role;
@@ -22,6 +23,9 @@ public class CodeSchoolAuthenticationProvider implements AuthenticationProvider 
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
     System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11111");
@@ -29,8 +33,8 @@ public class CodeSchoolAuthenticationProvider implements AuthenticationProvider 
     String password = authentication.getCredentials().toString();
     User user = userRepository.findByEmail(email);
 
-    if (user != null && user.getUser_id() > 0 && password.equals(user.getPassword())) {
-      return new UsernamePasswordAuthenticationToken(user.getName(), password, getGrantedAuthorities(user.getRoles()));
+    if (user != null && user.getUser_id() > 0 && passwordEncoder.matches(password, user.getPassword())) {
+      return new UsernamePasswordAuthenticationToken(user.getName(), null, getGrantedAuthorities(user.getRoles()));
     } else {
       throw new BadCredentialsException("Invalid credentials");
     }

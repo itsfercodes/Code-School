@@ -9,9 +9,9 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
-import com.itsfercodes.code_school.security.CodeSchoolAuthenticationProvider;
 
 @Configuration
 @EnableWebSecurity
@@ -24,30 +24,25 @@ public class ProjectSecurityConfig {
   String[] adminResources = { "/displayMessages/**", "/closeMessage/**" };
   String[] csrfIgnoreList = { "/saveMessage", "/public/**" };
 
-  @Autowired
-  private CodeSchoolAuthenticationProvider authProvider;
-
   @Bean
   SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-    http.csrf(csrf -> csrf.ignoringRequestMatchers(csrfIgnoreList));
+    http.csrf(csrf -> csrf.ignoringRequestMatchers(csrfIgnoreList))
 
-    http.authorizeHttpRequests((authz) -> authz
-        // Public
-        .requestMatchers(publicResources).permitAll()
+        .authorizeHttpRequests((requests) -> requests
+            // Public
+            .requestMatchers(publicResources).permitAll()
 
-        // Require authentication
-        .requestMatchers(authenticationResources).authenticated()
+            // Require authentication
+            .requestMatchers(authenticationResources).authenticated()
 
-        // Require ADMIN role
-        .requestMatchers(adminResources).hasRole("ADMIN"));
-
-    // Login page
-    http.formLogin(login -> login
-        .loginPage("/login")
-        .defaultSuccessUrl("/dashboard")
-        .failureUrl("/login?error=true")
-        .permitAll())
+            // Require ADMIN role
+            .requestMatchers(adminResources).hasRole("ADMIN"))
+        .formLogin(login -> login
+            .loginPage("/login")
+            .defaultSuccessUrl("/dashboard")
+            .failureUrl("/login?error=true")
+            .permitAll())
         .logout(logoutConfigurer -> logoutConfigurer.logoutSuccessUrl("/login?logout=true")
             .invalidateHttpSession(true).permitAll())
         .httpBasic(Customizer.withDefaults());
@@ -56,10 +51,7 @@ public class ProjectSecurityConfig {
   }
 
   @Bean
-  public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-    AuthenticationManagerBuilder authenticationManagerBuilder = http
-        .getSharedObject(AuthenticationManagerBuilder.class);
-    authenticationManagerBuilder.authenticationProvider(authProvider);
-    return authenticationManagerBuilder.build();
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 }
